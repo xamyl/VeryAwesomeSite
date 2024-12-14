@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chrome Window</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1a1a1a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .meme-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .chrome-window {
+            position: fixed;
+            width: 1000px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            cursor: move;
+            z-index: 2;
+        }
+
+        .window-header {
+            background: #f1f3f4;
+            padding: 8px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .control-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .red { background: #ff5f56; }
+        .yellow { background: #ffbd2e; }
+        .green { background: #27c93f; }
+
+        .tab-bar {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 8px 8px 0 0;
+            display: inline-flex;
+            align-items: center;
+            font-size: 13px;
+            color: #5f6368;
+            border: 1px solid #dfe1e5;
+        }
+
+        .url-bar {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            margin-top: 8px;
+            border: 1px solid #dfe1e5;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #202124;
+        }
+
+        .lock-icon {
+            color: #5f6368;
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 16px;
+            height: 900px;
+            background: white;
+            border-radius: 0 0 8px 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="meme-background">
+        <div style="font-size: 72px;">😺</div>
+        <div>I CAN HAZ</div>
+        <div>CHEEZBURGER?</div>
+    </div>
+
+    <div class="chrome-window" id="draggableWindow">
+        <div class="window-header">
+            <div class="window-controls">
+                <div class="control-button red"></div>
+                <div class="control-button yellow"></div>
+                <div class="control-button green"></div>
+            </div>
+            <div class="tab-bar">
+                Ggole
+            </div>
+            <div class="url-bar">
+                <span class="lock-icon">🔒</span>
+                https://ggole.com
+            </div>
+        </div>
+        <div class="content">
+            <img src="https://files.catbox.moe/h755oe.png" width="100" height="50"><br>
+			<textarea placeholder="serch here" style="color: grey;"></textarea><br>
+			<button>Ggole Serch</button>  <button>im lucky</button>
+        </div>
+    </div>
+
+    <script>
+        const window = document.getElementById('draggableWindow');
+        let isDragging = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 100;
+        let yOffset = 100;
+
+        window.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+
+        window.addEventListener('mousedown', dragStart);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', dragEnd);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === window || window.contains(e.target)) {
+                isDragging = true;
+            }
+        }
+
+        function drag(e) {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                xOffset = currentX;
+                yOffset = currentY;
+
+                window.style.transform = `translate(${currentX}px, ${currentY}px)`;
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+            isDragging = false;
+        }
+    </script>
+</body>
+</html>
